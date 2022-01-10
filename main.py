@@ -17,16 +17,12 @@ class User(db.Model):
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 # db.create_all()
 
-# admin = User(title="Harry Potter", author="J. K. Rowling", rating=4.3)
-# db.session.add(admin)
-# db.session.commit()
 all_books = []
 
 
 @app.route('/')
 def home():
     all_books = db.session.query(User).all()
-    # return f"{all_books}"
     return render_template("index.html", books=all_books, length=len(all_books))
 
 
@@ -36,13 +32,6 @@ def add():
         book_details = User(title=request.form["book"], author=request.form["author"], rating=request.form["rating"])
         db.session.add(book_details)
         db.session.commit()
-        # new_dict = {
-        #     "title": request.form["book"],
-        #     "author": request.form["author"],
-        #     "rating": int(request.form["rating"])
-        # }
-        # all_books.append(new_dict)
-
         return redirect(url_for('home'))
     else:
         return render_template("add.html")
